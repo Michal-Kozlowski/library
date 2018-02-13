@@ -1,0 +1,199 @@
+<template>
+	<form method="POST" action="" v-show="(logged.name === '')">
+	    <fieldset>
+	    	<legend>Please sing in</legend>
+	    	<div :class="{invalid: $v.name.$error}">
+          <div class="row">
+    		    <i class="material-icons col s2">account_box</i>
+            <input class="col s8" type="text" name="name" id="name" placeholder="name" v-model="name" @blur="$v.name.$touch()">           
+          </div>
+  	      <transition name="slide">
+  	    		<p v-if="$v.name.$error">What's your name?</p>
+  	    	</transition>
+		    </div>
+		    <div :class="{invalid: $v.password.$error}">
+          <div class="row">
+            <i class="material-icons col s2">lock_outline</i>
+            <input class="col s8" type="password" name="password" id="password" placeholder="password" v-model="password" @blur="$v.password.$touch()">
+          </div>
+  		    <transition name="slide">
+  					<p v-if="$v.password.$error">Password must be at least 6 letters long</p>
+  				</transition>
+        </div>
+		    <div class="row">
+          <i class="material-icons col s4">assignment_turned_in</i>
+		      <button class="waves-effect waves-light blue lighten-1 btn-large" type="submit" @click.prevent="[$v.name.$touch(), $v.password.$touch(), onSubmit()]">login</button>
+		    </div>
+        <transition name="slide">
+          <p v-if="error">Wrong name or password (or both).</p>
+        </transition>
+	    </fieldset> 
+	</form>
+</template>
+
+<script>
+import {required, minLength} from 'vuelidate/lib/validators';
+
+export default {
+	data () {
+		return {
+			name: '',
+			password: '',
+      error: false
+		}
+	},
+	validations: {
+		name: {
+			required
+		},
+		password: {
+			required,
+			minLen: minLength(6)
+		}
+	},
+	computed: {
+    logged(){
+      return this.$store.getters.logged;
+    }
+  },
+	methods: {
+		onSubmit() {
+			const formData = {
+				name: this.name,
+				password: this.password
+			}
+			this.$store.dispatch('login', formData);
+      if(this.logged) {
+        this.error = true;
+      }
+		}
+	}
+}
+</script>
+
+<style scoped>
+  fieldset {
+    background-color: rgba(0,0,0,0.7);
+  	margin: 0 auto;
+  	max-width: 400px;
+  	border-radius: 5px;
+  	box-shadow: 0 0 30px 2px black;
+  }
+
+  legend {
+  	font-size: 2em;
+  	text-shadow: 0 0 20px white, 0 0 10px white;
+    text-align: center;
+  }
+
+  div:not(:last-child) {
+  	margin-top: 20px;
+  	margin-bottom: 20px;
+  }
+
+  input {
+  	font-size: 1.1em;
+  	width: 90%;
+  	border-radius: 5px;
+  	color: white;
+  }
+
+  label {
+  	text-transform: capitalize;
+  	margin-bottom: 4px;
+  	display: block;
+  	text-shadow: 0 0 5px black;
+  }
+
+  .material-icons {
+    color: white;
+  	/*display: none;*/
+  	font-size: 2em;
+  	transform: translateY(12px);
+  	padding-left: 18px;
+  }
+
+  input[type="submit"] {
+    color: black;
+  	width: 120px;
+  	margin-bottom: 20px;
+  	text-transform: capitalize;
+  	cursor: pointer;
+  }
+
+  p {
+    color: white;
+  	font-size: 0.8em;
+  	max-width: 80%;
+  	padding-left: 25px;
+  	margin: 2px auto 0;
+  }
+
+  .invalid label {
+    color: red;
+  }
+
+  .invalid input {
+    border: 2px solid red;
+    background-color: $ffc9aa;
+  }
+
+  .invalid input {
+  	animation: shake .5s;
+  }
+
+  @keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    70% { transform: translate(3px, 1px) rotate(-1deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    90% { transform: translate(1px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
+  }
+
+  .slide-leave-active {
+    animation: slide-out .5s;
+    transition: opacity .2s;
+    opacity: 1;
+  }
+
+  .slide-leave {
+    opacity: 0;
+  }
+
+  @keyframes slide-out {
+    from {
+      transform: translateY(0) scaleY(1);
+    }
+    to {
+      transform: translateY(-25px) scaleY(0);
+    }
+  }
+
+  @media only screen and (min-width: 340px) {
+    .material-icons {
+      display: initial;
+    }
+
+    input {
+  	  width: 240px;
+  	}
+  }
+
+  @media only screen and (min-width: 400px) {
+  	input {
+  	  width: 280px;
+  	}
+  }
+
+  @media only screen and (min-height: 768px) {
+    fieldset {
+  	  margin: 10vh auto 0;
+  	}
+  }
+</style>
