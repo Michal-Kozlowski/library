@@ -8,6 +8,7 @@ import SignupPage from './components/auth/signup.vue'
 import SigninPage from './components/auth/signin.vue'
 import Library from './components/library/library.vue'
 import Book from './components/library/book.vue'
+import User from './components/user/user.vue'
 
 Vue.use(VueRouter)
 
@@ -16,7 +17,8 @@ const routes = [
   { path: '/signup', component: SignupPage },
   { path: '/signin', component: SigninPage },
   { path: '/library', component: Library },
-  { path: '/library/:id', component: Book }
+  { path: '/library/:id', component: Book },
+  { path: '/user', component: User }
 ]
 
 export default new VueRouter({mode: 'history', routes})

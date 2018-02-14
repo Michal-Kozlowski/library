@@ -1,20 +1,10 @@
 <template>
   <div id="library">
-    <div class="row">
-      <div class="input-field col s8 l4 offset-s2 offset-l4">
-        <form>
-          <input type="text" name="search" placeholder="Search (by title or author)" v-model="search">
-        </form>
-      </div>
-    </div>
     <ul class="row">
-    	<li v-for="book in books" class="col s6 m4 l3" v-if="match_name(book) || match_author(book)">
+    	<li v-for="book in books" class="col s6 m4 l3" v-if="logged.name === book.borrowedBy">
         <router-link :to="link(book.id)">
           <img :src="book.cover" :alt="book.name" class="responsive-img">
-          <p>
-            <span class="status green" v-if="book.borrowedBy === ''">avaliable</span>
-            <span class="status red" v-else>borrowed</span>
-          </p>
+          <button class="waves-effect waves-light btn" @click.prevent="returnBook(book)" v-if="book.borrowedBy === logged.name">return</button>          
           <p>
             <span class="title">{{book.name}}</span></br>
             <span class="author">{{book.author}}</span>
@@ -36,6 +26,9 @@
     computed: {
       books() {
         return this.$store.getters.books;
+      },
+      logged() {
+        return this.$store.getters.logged;
       }
     },
     methods: {
@@ -47,6 +40,10 @@
       },
       match_author(book) {
         return book.author.toLowerCase().includes(this.search.toLowerCase());
+      },
+      returnBook(book) {
+        book.borrowedBy = '';
+        this.$store.getters.router.push('/Library');
       }
     }
   }
@@ -77,7 +74,7 @@
   }
 
   li {
-    height: 350px;
+    height: 380px;
     border: 1px solid rgba(0,0,0,0.3);
     border-radius: 5px;
     background-color: rgba(255,255,255,0.3);
@@ -111,5 +108,10 @@
     height: 230px;
     display: block;
     margin: auto;
+  }
+
+  button {
+    display: block;
+    margin: 5px auto 0;
   }
 </style>

@@ -3,16 +3,16 @@ import Vuex from 'vuex'
 
 import books from './components/data/books';
 
-// import router from './router'
+import router from './router'
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     users: [
-      { name: 'Michał', password: 'password', borrowed: [] },
-      { name: 'Monika', password: 'password', borrowed: [] },
-      { name: 'Max', password: 'password', borrowed: [] }
+      { name: 'Michał', password: 'password'},
+      { name: 'Monika', password: 'password'},
+      { name: 'Max', password: 'password'}
     ],
     logged: { name: '', password: ''},
     comments: [
@@ -34,10 +34,10 @@ export default new Vuex.Store({
         }
       });
     },
-    SIGNUP(state, formData) {     
+    SIGNUP(state, formData) {
       this.state.logged.name = formData.name;
       this.state.logged.password = formData.password;
-      this.state.users.push({name: formData.name, password: formData.password, borrowed: []});
+      this.state.users.push({name: formData.name, password: formData.password});
     },
     LOGOUT(state) {
       this.state.logged.name = '';
@@ -74,6 +74,9 @@ export default new Vuex.Store({
       } else {
         return false;
       }
+    },
+    router() {
+      return router;
     }
   }
 });	

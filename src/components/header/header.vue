@@ -11,7 +11,7 @@
             <router-link to="/signin">Sign In</router-link>
           </li>
           <li v-if="auth">
-             <router-link to="/welcome">Welcome {{logged.name}} :)</router-link>
+             <router-link to="/user">Welcome {{logged.name}} :)</router-link>
           </li>
           <li v-if="auth" @click="onLogout">
             <router-link to="/">Logout</router-link>

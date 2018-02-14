@@ -63,6 +63,7 @@ export default {
 				password: this.password
 			}
 			this.$store.dispatch('login', formData);
+      this.$store.getters.router.push({path: '/Library'});
       if(this.logged) {
         this.error = true;
       }

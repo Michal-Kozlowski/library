@@ -8,6 +8,8 @@
       </p>
       <p class="description">{{books[id].description}}</p>
       <router-link to="/library">Back to The Library</span></router-link>
+      <button class="waves-effect waves-light btn" @click.prevent="borrow(books[id])" v-if="books[id].borrowedBy === ''">Borrow</button>
+      <button class="waves-effect waves-light btn disabled" v-else>Borrowed</button>
     </div>
     <ul>
       <li class="comment" v-for="comment in comments" v-if="match_id(comment)">{{comment.text}} - <i>{{comment.author}}</i></li>
@@ -26,11 +28,22 @@
       },
       comments() {
         return this.$store.getters.comments;
+      },
+      logged(){
+        return this.$store.getters.logged;
       }
     },
     methods: {
       match_id(comment) {
         return comment.bookID == this.$route.params.id;
+      },
+      borrow(book) {
+        if(this.logged.name === '') {
+          alert("You need to log in to borrow books!");
+        } else {
+          book.borrowedBy = this.logged.name;
+          this.$store.getters.router.push('/Library');
+        }
       }
     }
   }
@@ -66,5 +79,9 @@
     max-height: 450px;
     display: block;
     margin: auto;
+  }
+
+  button {
+    float: right;
   }
 </style>
