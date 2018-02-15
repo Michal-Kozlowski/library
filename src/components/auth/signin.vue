@@ -22,7 +22,7 @@
         </div>
 		    <div class="row">
           <i class="material-icons col s4">assignment_turned_in</i>
-		      <button class="waves-effect waves-light blue lighten-1 btn-large" type="submit" @click.prevent="[$v.name.$touch(), $v.password.$touch(), onSubmit()]">login</button>
+		      <button class="waves-effect waves-light blue lighten-1 btn-large" :disabled="$v.$invalid" type="submit" @click.prevent="[$v.name.$touch(), $v.password.$touch(), onSubmit()]">login</button>
 		    </div>
         <transition name="slide">
           <p v-if="error">Wrong name or password (or both).</p>
@@ -63,6 +63,7 @@ export default {
 				password: this.password
 			}
 			this.$store.dispatch('login', formData);
+      this.$store.dispatch('save');
       this.$store.getters.router.push({path: '/Library'});
       if(this.logged) {
         this.error = true;
@@ -75,59 +76,58 @@ export default {
 <style scoped>
   fieldset {
     background-color: rgba(0,0,0,0.7);
-  	margin: 0 auto;
-  	max-width: 400px;
-  	border-radius: 5px;
-  	box-shadow: 0 0 30px 2px black;
+    max-width: 400px;
+    border-radius: 5px;
+    margin: 0 auto;
+    box-shadow: 0 0 30px 2px black;
   }
 
   legend {
-  	font-size: 2em;
-  	text-shadow: 0 0 20px white, 0 0 10px white;
+    font-size: 2em;
     text-align: center;
+    text-shadow: 0 0 20px white, 0 0 10px white;
   }
 
   div:not(:last-child) {
-  	margin-top: 20px;
-  	margin-bottom: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
   }
 
   input {
-  	font-size: 1.1em;
-  	width: 90%;
-  	border-radius: 5px;
-  	color: white;
+    font-size: 1.1em;
+    color: white;
+    width: 90%;
+    border-radius: 5px;
   }
 
   label {
-  	text-transform: capitalize;
-  	margin-bottom: 4px;
-  	display: block;
-  	text-shadow: 0 0 5px black;
+    text-transform: capitalize;
+    display: block;
+    margin-bottom: 4px;
+    text-shadow: 0 0 5px black;
   }
 
   .material-icons {
+    font-size: 2em;
     color: white;
-  	/*display: none;*/
-  	font-size: 2em;
-  	transform: translateY(12px);
-  	padding-left: 18px;
+    padding-left: 18px;
+    transform: translateY(12px);
   }
 
   input[type="submit"] {
     color: black;
-  	width: 120px;
-  	margin-bottom: 20px;
-  	text-transform: capitalize;
-  	cursor: pointer;
+    text-transform: capitalize;
+    cursor: pointer;
+    width: 120px;
+    margin-bottom: 20px;
   }
 
   p {
+    font-size: 0.8em;
     color: white;
-  	font-size: 0.8em;
-  	max-width: 80%;
-  	padding-left: 25px;
-  	margin: 2px auto 0;
+    max-width: 80%;
+    padding-left: 25px;
+    margin: 2px auto 0;
   }
 
   .invalid label {
@@ -135,14 +135,13 @@ export default {
   }
 
   .invalid input {
-    border: 2px solid red;
     background-color: $ffc9aa;
+    border: 2px solid red;
   }
 
   .invalid input {
-  	animation: shake .5s;
+    animation: shake .5s;
   }
-
   @keyframes shake {
     0% { transform: translate(1px, 1px) rotate(0deg); }
     10% { transform: translate(-1px, -2px) rotate(-1deg); }
@@ -174,22 +173,6 @@ export default {
     to {
       transform: translateY(-25px) scaleY(0);
     }
-  }
-
-  @media only screen and (min-width: 340px) {
-    .material-icons {
-      display: initial;
-    }
-
-    input {
-  	  width: 240px;
-  	}
-  }
-
-  @media only screen and (min-width: 400px) {
-  	input {
-  	  width: 280px;
-  	}
   }
 
   @media only screen and (min-height: 768px) {

@@ -16,7 +16,6 @@
 </template>
 
 <script>
-
   export default {
     data() {
       return {
@@ -43,7 +42,7 @@
       },
       returnBook(book) {
         book.borrowedBy = '';
-        this.$store.getters.router.push('/Library');
+        this.$store.dispatch('save');
       }
     }
   }
@@ -53,8 +52,8 @@
   ::placeholder {
     font-weight: 700;
     color: white;
-    text-shadow: 0 0 5px black;
     opacity: 0.8; /* Firefox */
+    text-shadow: 0 0 5px black;
   }
   :-ms-input-placeholder { /* Internet Explorer 10-11 */
     font-weight: 700;
@@ -74,25 +73,25 @@
   }
 
   li {
-    height: 380px;
+    background-color: rgba(255,255,255,0.3);
+    text-align: justify;
+    overflow-y: hidden;
     border: 1px solid rgba(0,0,0,0.3);
     border-radius: 5px;
-    background-color: rgba(255,255,255,0.3);
-    overflow-y: hidden;
-    text-align: justify;
+    height: 380px;
     padding-bottom: 50px;
   }
 
   p {
-    margin: 8px 0 -3px;
     color: #2c3e50;
     text-align: center;
+    margin: 8px 0 -3px;
   }
 
   .status {
+    text-transform: uppercase;
     border-radius: 2px;
     padding: 1px 6px;
-    text-transform: uppercase;
   }
   
   .title {
@@ -104,10 +103,10 @@
   }
 
   .responsive-img {
-    padding-top: 15px;
     height: 230px;
     display: block;
     margin: auto;
+    padding-top: 15px;
   }
 
   button {

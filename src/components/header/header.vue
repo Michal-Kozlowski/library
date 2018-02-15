@@ -2,8 +2,8 @@
   <header id="header">
     <nav>
       <div class="nav-wrapper blue lighten-2">
-        <router-link to="/library" class="brand-logo">The Library</span></router-link>
-        <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <router-link to="/library" class="brand-logo left">Library</span></router-link>
+        <ul class="right">
           <li v-if="!auth">
             <router-link to="/signup">Sign Up</router-link>
           </li>
@@ -11,7 +11,7 @@
             <router-link to="/signin">Sign In</router-link>
           </li>
           <li v-if="auth">
-             <router-link to="/user">Welcome {{logged.name}} :)</router-link>
+             <router-link to="/user">{{logged.name}}</router-link>
           </li>
           <li v-if="auth" @click="onLogout">
             <router-link to="/">Logout</router-link>
@@ -38,7 +38,8 @@
     methods: {
       onLogout() {
         this.$store.dispatch('logout');
-
+        this.$store.dispatch('save');
+        this.$store.getters.router.push('/Library');
       }
     }
   }

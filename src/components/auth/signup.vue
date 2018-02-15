@@ -22,7 +22,7 @@
         </div>
 		    <div class="row">
           <i class="material-icons col s4">assignment_turned_in</i>
-		      <button class="waves-effect waves-light blue lighten-1 btn-large" type="submit" @click.prevent="[$v.name.$touch(), $v.password.$touch(), submit()]">login</button>
+		      <button class="waves-effect waves-light blue lighten-1 btn-large" type="submit" :disabled="$v.$invalid" @click.prevent="[$v.name.$touch(), $v.password.$touch(), submit()]">login</button>
 		    </div>
 	    </fieldset> 
 	</form>
@@ -66,6 +66,8 @@ export default {
           password: this.password
         }
         this.$store.dispatch('signup', formData);
+        this.$store.dispatch('save');
+        this.$store.getters.router.push({path: '/Library'});
       } else {
         alert("Name already in use");
       }
@@ -77,16 +79,16 @@ export default {
 <style scoped>
   fieldset {
     background-color: rgba(0,0,0,0.7);
-  	margin: 0 auto;
   	max-width: 400px;
   	border-radius: 5px;
+    margin: 0 auto;
   	box-shadow: 0 0 30px 2px black;
   }
 
   legend {
   	font-size: 2em;
-  	text-shadow: 0 0 20px white, 0 0 10px white;
     text-align: center;
+  	text-shadow: 0 0 20px white, 0 0 10px white;
   }
 
   div:not(:last-child) {
@@ -96,37 +98,36 @@ export default {
 
   input {
   	font-size: 1.1em;
-  	width: 90%;
-  	border-radius: 5px;
   	color: white;
+    width: 90%;
+    border-radius: 5px;
   }
 
   label {
   	text-transform: capitalize;
+    display: block;
   	margin-bottom: 4px;
-  	display: block;
   	text-shadow: 0 0 5px black;
   }
 
   .material-icons {
-    color: white;
-  	/*display: none;*/
   	font-size: 2em;
+    color: white;
+    padding-left: 18px;
   	transform: translateY(12px);
-  	padding-left: 18px;
   }
 
   input[type="submit"] {
     color: black;
-  	width: 120px;
-  	margin-bottom: 20px;
   	text-transform: capitalize;
   	cursor: pointer;
+    width: 120px;
+    margin-bottom: 20px;
   }
 
   p {
-    color: white;
   	font-size: 0.8em;
+    color: white;
   	max-width: 80%;
   	padding-left: 25px;
   	margin: 2px auto 0;
@@ -137,8 +138,8 @@ export default {
   }
 
   .invalid input {
-    border: 2px solid red;
     background-color: $ffc9aa;
+    border: 2px solid red;
   }
 
   .invalid input {
@@ -176,22 +177,6 @@ export default {
     to {
       transform: translateY(-25px) scaleY(0);
     }
-  }
-
-  @media only screen and (min-width: 340px) {
-    .material-icons {
-      display: initial;
-    }
-
-    input {
-  	  width: 240px;
-  	}
-  }
-
-  @media only screen and (min-width: 400px) {
-  	input {
-  	  width: 280px;
-  	}
   }
 
   @media only screen and (min-height: 768px) {

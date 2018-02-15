@@ -10,6 +10,12 @@
     <ul class="row">
     	<li v-for="book in books" class="col s6 m4 l3" v-if="match_name(book) || match_author(book)">
         <router-link :to="link(book.id)">
+          <p><i 
+            v-for="(star, index) in 5"
+            :class="{rate:index < Math.round(book.rate.sum/book.rate.voters.length)}"
+            @click.prevent="rate(index, book)" 
+            class="material-icons">star
+          </i></p>
           <img :src="book.cover" :alt="book.name" class="responsive-img">
           <p>
             <span class="status green" v-if="book.borrowedBy === ''">avaliable</span>
@@ -26,7 +32,6 @@
 </template>
 
 <script>
-
   export default {
     data() {
       return {
@@ -36,6 +41,9 @@
     computed: {
       books() {
         return this.$store.getters.books;
+      },
+      logged(){
+        return this.$store.getters.logged;
       }
     },
     methods: {
@@ -47,17 +55,33 @@
       },
       match_author(book) {
         return book.author.toLowerCase().includes(this.search.toLowerCase());
+      },
+      rate(index, book) {
+        if(this.logged.name){
+          if(!this.books[book.id-1].rate.voters.includes(this.logged.name)) { 
+            const vote = {
+              value: index,
+              id: book.id-1
+            }  
+            this.$store.dispatch('rate', vote);
+            this.$store.dispatch('save');
+          } else {
+            alert("You have already rated this book!");
+          }          
+        } else {
+          alert("You have to log in to do that!"); 
+        }
       }
     }
   }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   ::placeholder {
     font-weight: 700;
     color: white;
-    text-shadow: 0 0 5px black;
     opacity: 0.8; /* Firefox */
+    text-shadow: 0 0 5px black;
   }
   :-ms-input-placeholder { /* Internet Explorer 10-11 */
     font-weight: 700;
@@ -77,25 +101,28 @@
   }
 
   li {
-    height: 350px;
+    background-color: rgba(255,255,255,0.3);
+    text-align: justify;
     border: 1px solid rgba(0,0,0,0.3);
     border-radius: 5px;
-    background-color: rgba(255,255,255,0.3);
+    height: 350px;
     overflow-y: hidden;
-    text-align: justify;
     padding-bottom: 50px;
   }
 
   p {
-    margin: 8px 0 -3px;
-    color: #2c3e50;
+    line-height: 1.5em;
     text-align: center;
+    color: #2c3e50;
+    margin: 8px 0 -3px;
   }
 
   .status {
+    text-transform: uppercase;
     border-radius: 2px;
     padding: 1px 6px;
-    text-transform: uppercase;
+    box-shadow: 2px 2px 10px #000;
+
   }
   
   .title {
@@ -107,9 +134,25 @@
   }
 
   .responsive-img {
-    padding-top: 15px;
-    height: 230px;
+    height: 210px;
     display: block;
     margin: auto;
+    box-shadow: 2px 2px 10px #000;
+  }
+
+  i {
+    font-size: 1.2em;
+    cursor: pointer;
+    &:hover {
+      font-size: 1.4em;
+      color: gold;
+      margin-top: -3px;
+      text-shadow: 0 0 25px black, 0 0 10px black, 0 0 4px white, 1px 2px 1px black;
+    }
+  }
+
+  .rate {
+    color: gold;
+    text-shadow: 0 0 25px black, 0 0 10px black, 0 0 4px white, 1px 2px 1px black;
   }
 </style>
