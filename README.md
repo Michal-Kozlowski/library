@@ -2,6 +2,13 @@
 
 > A Vue.js project
 
+30 initial books,
+signup and signin - 3 initial users (Michał, Monika, Max with password: password),
+search by author or title,
+comments,
+borrow/return book,
+rating in stars
+
 ## Build Setup
 
 ``` bash
