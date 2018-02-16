@@ -17,11 +17,11 @@ export default new Vuex.Store({
     ],
     logged: { name: '', password: ''},
     comments: [
-      { bookID: 1, text: "This is the first comment" , author: "M" },
-      { bookID: 1, text: "This is the second comment" , author: "MM" },
-      { bookID: 1, text: "This is the third comment" , author: "MMM" },
-      { bookID: 2, text: "This is the fourth comment" , author: "MMMM" },
-      { bookID: 3, text: "This is the fifth comment" , author: "MMMMM" }
+      { bookID: 1, text: "This is the first comment" , author: "Michał" },
+      { bookID: 1, text: "This is the second comment" , author: "Monika" },
+      { bookID: 1, text: "This is the third comment" , author: "Michał" },
+      { bookID: 2, text: "This is the fourth comment" , author: "Max" },
+      { bookID: 3, text: "This is the fifth comment" , author: "Monika" }
     ]
   },
   mutations: {
@@ -53,10 +53,10 @@ export default new Vuex.Store({
       this.state.books[vote.id].rate.voters.push(this.state.logged.name);
     },
     SAVE_DATA(state) {
-      localStorage.setItem('state', JSON.stringify(this.state));
+      localStorage.setItem('libraryState', JSON.stringify(this.state));
     },
     LOAD_DATA(state) {
-      const local = localStorage.getItem('state');
+      const local = localStorage.getItem('libraryState');
       if(local) {       
         this.state.users = JSON.parse(local).users;
         this.state.logged = JSON.parse(local).logged;

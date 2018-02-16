@@ -67,7 +67,7 @@ export default {
         }
         this.$store.dispatch('signup', formData);
         this.$store.dispatch('save');
-        this.$store.getters.router.push({path: '/Library'});
+        this.$store.getters.router.push('/library');
       } else {
         alert("Name already in use");
       }

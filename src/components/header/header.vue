@@ -39,7 +39,7 @@
       onLogout() {
         this.$store.dispatch('logout');
         this.$store.dispatch('save');
-        this.$store.getters.router.push('/Library');
+        this.$store.getters.router.push('/library');
       }
     }
   }

@@ -64,7 +64,7 @@ export default {
 			}
 			this.$store.dispatch('login', formData);
       this.$store.dispatch('save');
-      this.$store.getters.router.push({path: '/Library'});
+      this.$store.getters.router.push('/library');
       if(this.logged) {
         this.error = true;
       }

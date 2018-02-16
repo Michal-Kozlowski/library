@@ -63,7 +63,7 @@
         } else {
           book.borrowedBy = this.logged.name;
           this.$store.dispatch('save');
-          this.$store.getters.router.push('/Library');
+          this.$store.getters.router.push('/library');
         }
       },
       addComment() {
