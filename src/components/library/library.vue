@@ -8,10 +8,12 @@
       </div>
     </div>
     <ul class="row">
-    	<li v-for="book in books" class="col s6 m4 l3" v-if="match_name(book) || match_author(book)">
-        <router-link :to="link(book.id)">
+      <li v-for="book in books" class="col s6 m4 l3" v-if="match_name(book) || match_author(book)">
+        <router-link :to="{name: 'book', params: {id: book.id}}">
           <p><i 
             v-for="(star, index) in 5"
+            @mouseover="starsHover(index, book.id)"
+            @mouseleave="starsLeave(index, book.id)"
             :class="{rate:index < Math.round(book.rate.sum/book.rate.voters.length)}"
             @click.prevent="rate(index, book)" 
             class="material-icons">star
@@ -19,7 +21,8 @@
           <img :src="book.cover" :alt="book.name" class="responsive-img">
           <p>
             <span class="status green" v-if="book.borrowedBy === ''">avaliable</span>
-            <span class="status red" v-else>borrowed</span>
+            <span class="status blue" v-if="book.borrowedBy === logged.name">borrowed by you</span>
+            <span class="status red" v-if="book.borrowedBy !== '' && book.borrowedBy !== logged.name">borrowed</span>
           </p>
           <p>
             <span class="title">{{book.name}}</span></br>
@@ -47,9 +50,6 @@
       }
     },
     methods: {
-      link(id) {
-        return "/library/" + id;
-      },
       match_name(book) {
         return book.name.toLowerCase().includes(this.search.toLowerCase());
       },
@@ -64,12 +64,21 @@
               id: book.id-1
             }  
             this.$store.dispatch('rate', vote);
-            this.$store.dispatch('save');
           } else {
             alert("You have already rated this book!");
           }          
         } else {
           alert("You have to log in to do that!"); 
+        }
+      },
+      starsHover(index, id) {
+        for(var i=0; i<=index; i++) {
+          document.querySelectorAll("i")[(5*(id-1))+index-i].classList.add('starHover');
+        }
+      },
+      starsLeave(index, id) {
+        for(var i=0; i<=index; i++) {
+          document.querySelectorAll("i")[(5*(id-1))+index-i].classList.remove('starHover');
         }
       }
     }
@@ -143,12 +152,13 @@
   i {
     font-size: 1.2em;
     cursor: pointer;
-    &:hover {
-      font-size: 1.4em;
-      color: gold;
-      margin-top: -3px;
-      text-shadow: 0 0 25px black, 0 0 10px black, 0 0 4px white, 1px 2px 1px black;
-    }
+  }
+
+  .starHover {      
+    font-size: 1.4em;
+    color: gold;
+    margin-top: -3px;
+    text-shadow: 0 0 25px black, 0 0 10px black, 0 0 4px white, 1px 2px 1px black;
   }
 
   .rate {

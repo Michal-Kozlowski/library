@@ -1,75 +1,76 @@
 <template>
-	<form method="POST" action="" v-show="(logged.name === '')">
-	    <fieldset>
-	    	<legend>Please sing in</legend>
-	    	<div :class="{invalid: $v.name.$error}">
+  <form method="POST" action="" v-show="(logged.name === '')">
+      <fieldset>
+        <legend>Please sing in</legend>
+        <div :class="{invalid: $v.name.$error}">
           <div class="row">
-    		    <i class="material-icons col s2">account_box</i>
+            <i class="material-icons col s2">account_box</i>
             <input class="col s8" type="text" name="name" id="name" placeholder="name" v-model="name" @blur="$v.name.$touch()">           
           </div>
-  	      <transition name="slide">
-  	    		<p v-if="$v.name.$error">What's your name?</p>
-  	    	</transition>
-		    </div>
-		    <div :class="{invalid: $v.password.$error}">
+          <transition name="slide">
+            <p v-if="$v.name.$error">What's your name?</p>
+          </transition>
+        </div>
+        <div :class="{invalid: $v.password.$error}">
           <div class="row">
             <i class="material-icons col s2">lock_outline</i>
             <input class="col s8" type="password" name="password" id="password" placeholder="password" v-model="password" @blur="$v.password.$touch()">
           </div>
-  		    <transition name="slide">
-  					<p v-if="$v.password.$error">Password must be at least 6 letters long</p>
-  				</transition>
+          <transition name="slide">
+            <p v-if="$v.password.$error">Password must be at least 6 letters long</p>
+          </transition>
         </div>
-		    <div class="row">
+        <div class="row">
           <i class="material-icons col s4">assignment_turned_in</i>
-		      <button class="waves-effect waves-light blue lighten-1 btn-large" :disabled="$v.$invalid" type="submit" @click.prevent="[$v.name.$touch(), $v.password.$touch(), onSubmit()]">login</button>
-		    </div>
+          <button class="waves-effect waves-light blue lighten-1 btn-large" :disabled="$v.$invalid" type="submit" @click.prevent="[$v.name.$touch(), $v.password.$touch(), onSubmit()]">login</button>
+        </div>
         <transition name="slide">
           <p v-if="error">Wrong name or password (or both).</p>
         </transition>
-	    </fieldset> 
-	</form>
+      </fieldset> 
+  </form>
 </template>
 
 <script>
 import {required, minLength} from 'vuelidate/lib/validators';
 
 export default {
-	data () {
-		return {
-			name: '',
-			password: '',
+  data () {
+    return {
+      name: '',
+      password: '',
       error: false
-		}
-	},
-	validations: {
-		name: {
-			required
-		},
-		password: {
-			required,
-			minLen: minLength(6)
-		}
-	},
-	computed: {
+    }
+  },
+  validations: {
+    name: {
+      required
+    },
+    password: {
+      required,
+      minLen: minLength(6)
+    }
+  },
+  computed: {
     logged(){
       return this.$store.getters.logged;
     }
   },
-	methods: {
-		onSubmit() {
-			const formData = {
-				name: this.name,
-				password: this.password
-			}
-			this.$store.dispatch('login', formData);
-      this.$store.dispatch('save');
-      this.$store.getters.router.push('/library');
+  methods: {
+    onSubmit() {
+      const formData = {
+        name: this.name,
+        password: this.password
+      }
+      this.$store.dispatch('login', formData);
+      if(this.logged.name !== '') {
+        this.$store.getters.router.push({ name: 'library'});
+      }
       if(this.logged) {
         this.error = true;
       }
-		}
-	}
+    }
+  }
 }
 </script>
 
@@ -177,7 +178,7 @@ export default {
 
   @media only screen and (min-height: 768px) {
     fieldset {
-  	  margin: 10vh auto 0;
-  	}
+      margin: 10vh auto 0;
+    }
   }
 </style>

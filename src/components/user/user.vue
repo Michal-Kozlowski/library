@@ -1,8 +1,9 @@
 <template>
   <div id="library">
     <ul class="row">
-    	<li v-for="book in books" class="col s6 m4 l3" v-if="logged.name === book.borrowedBy">
-        <router-link :to="link(book.id)">
+      <h3 class="center">Here you can see all your borrowed books.</h3>
+      <li v-for="book in books" class="col s6 m4 l3" v-if="logged.name === book.borrowedBy">
+        <router-link :to="{name: 'book', params: {id: book.id}}">
           <img :src="book.cover" :alt="book.name" class="responsive-img">
           <button class="waves-effect waves-light btn" @click.prevent="returnBook(book)" v-if="book.borrowedBy === logged.name">return</button>          
           <p>
@@ -31,9 +32,6 @@
       }
     },
     methods: {
-      link(id) {
-        return "/library/" + id;
-      },
       match_name(book) {
         return book.name.toLowerCase().includes(this.search.toLowerCase());
       },

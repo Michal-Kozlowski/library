@@ -7,12 +7,15 @@
         <span class="author">{{books[id].author}}</span>
       </p>
       <p class="description">{{books[id].description}}</p>
-      <button class="waves-effect waves-light btn" @click.prevent="borrow(books[id])" v-if="books[id].borrowedBy === ''">Borrow</button>
-      <button class="waves-effect waves-light btn disabled" v-else>Borrowed</button>
-      <router-link to="/library" class="blue-text text-darken-2">Back to The Library</span></router-link>
+      <button class="waves-effect waves-light btn" v-if="books[id].borrowedBy === ''" @click.prevent="borrow(books[id])">Borrow</button>
+      <button class="waves-effect waves-light btn disabled" v-if="books[id].borrowedBy === logged.name">Borrowed by You</button>
+      <button class="waves-effect waves-light btn disabled" v-if="books[id].borrowedBy !== '' && books[id].borrowedBy !== logged.name">Borrowed</button>
+      <router-link :to="{name: 'library'}" class="blue-text text-darken-2">Back to The Library</span></router-link>
       <div class="right">
         <i 
-          v-for="(star, index) in 5" 
+          v-for="(star, index) in 5"
+          @mouseover="starsHover(index)"
+          @mouseleave="starsLeave(index)"
           @click="rate(index)" 
           :class="{rate:index < Math.round(books[id].rate.sum/books[id].rate.voters.length)}" 
           class="material-icons">star
@@ -63,7 +66,7 @@
         } else {
           book.borrowedBy = this.logged.name;
           this.$store.dispatch('save');
-          this.$store.getters.router.push('/library');
+          this.$store.getters.router.push({ name: 'library'});
         }
       },
       addComment() {
@@ -72,12 +75,10 @@
           bookID: this.$route.params.id
         }
         this.$store.dispatch('comment', commentData);
-        this.$store.dispatch('save');
         this.comment = '';
       },
       deleteComment(index) {
         this.$store.dispatch('deleteComment', index);
-        this.$store.dispatch('save');
       },
       rate(index) {
         if(this.logged.name){
@@ -87,12 +88,21 @@
               id: this.id
             }  
             this.$store.dispatch('rate', vote);
-            this.$store.dispatch('save');
           } else {
             alert("You have already rated this book!");
           }          
         } else {
           alert("You have to log in to do that!"); 
+        }
+      },
+      starsHover(index) {
+        for(var i=0; i<=index; i++) {
+          document.querySelectorAll("i")[index-i].classList.add('starHover');
+        }
+      },
+      starsLeave(index) {
+        for(var i=0; i<=index; i++) {
+          document.querySelectorAll("i")[index-i].classList.remove('starHover');
         }
       }
     }
@@ -145,12 +155,13 @@
     font-size: 1.2em;
     margin-top: 6px;
     cursor: pointer;
-    &:hover {
-      font-size: 1.4em;
-      color: gold;
-      margin-top: 3px;
-      text-shadow: 0 0 25px black, 0 0 10px black, 0 0 4px white, 1px 2px 1px black;
-    }
+  }
+
+  .starHover {      
+    font-size: 1.4em;
+    color: gold;
+    margin-top: 3px;
+    text-shadow: 0 0 25px black, 0 0 10px black, 0 0 4px white, 1px 2px 1px black;
   }
 
   .rate {

@@ -69,21 +69,27 @@ export default new Vuex.Store({
   actions: {
     login({commit}, formData) {
       commit('LOGIN', formData);
+      commit('SAVE_DATA');
     },
     signup({commit}, formData) {
-      commit('SIGNUP', formData);;
+      commit('SIGNUP', formData);
+      commit('SAVE_DATA');
     },
     logout({commit}) {
       commit('LOGOUT');
+      commit('SAVE_DATA');
     },
     comment({commit}, commentData) {
       commit('COMMENT', commentData);
+      commit('SAVE_DATA');
     },
     deleteComment({commit}, index) {
       commit('DELETE_COMMENT', index);
+      commit('SAVE_DATA');
     },
     rate({commit}, vote) {
       commit('RATE', vote);
+      commit('SAVE_DATA');
     },
     save({commit}) {
       commit('SAVE_DATA');
