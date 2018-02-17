@@ -14,6 +14,10 @@ borrow/return book
 
 rating in stars
 
+
++live demo link: https://michal-kozlowski.github.io/library/
+
+
 ## Build Setup
 
 ``` bash
