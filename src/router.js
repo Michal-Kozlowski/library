@@ -21,7 +21,8 @@ const routes = [
   { path: '/signin', name: 'signin', component: SigninPage },
   { path: '/library', name: 'library', component: Library },
   { path: '/library/:id', name: 'book', component: Book },
-  { path: '/user', name: 'user', component: User }
+  { path: '/user', name: 'user', component: User },
+  { path: '*', redirect: '/library'}
 ];
 
 // -----------(github pages)-------------
@@ -33,7 +34,8 @@ const routes = [
 //   { path: '/library/signin', name: 'signin', component: SigninPage },
 //   { path: '/library/library', name: 'library', component: Library },
 //   { path: '/library/library/:id', name: 'book', component: Book },
-//   { path: '/library/user', name: 'user', component: User }
+//   { path: '/library/user', name: 'user', component: User },
+//   { path: '*', redirect: '/library/library'}
 // ];
 
 export default new VueRouter({mode: 'history', routes});
