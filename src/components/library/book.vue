@@ -8,7 +8,7 @@
       </p>
       <p class="description">{{books[id].description}}</p>
       <button class="waves-effect waves-light btn" v-if="books[id].borrowedBy === ''" @click.prevent="borrow(books[id])">Borrow</button>
-      <button class="waves-effect waves-light btn disabled" v-if="books[id].borrowedBy === logged.name">Borrowed by You</button>
+      <button class="waves-effect waves-light btn disabled" v-if="books[id].borrowedBy === logged.name && books[id].borrowedBy !== ''">Borrowed by You</button>
       <button class="waves-effect waves-light btn disabled" v-if="books[id].borrowedBy !== '' && books[id].borrowedBy !== logged.name">Borrowed</button>
       <router-link :to="{name: 'library'}" class="blue-text text-darken-2">Back to The Library</span></router-link>
       <div class="right">

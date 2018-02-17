@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import books from './components/data/books';
+import books from './data/books';
 
 import router from './router';
 

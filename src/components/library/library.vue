@@ -21,7 +21,7 @@
           <img :src="book.cover" :alt="book.name" class="responsive-img">
           <p>
             <span class="status green" v-if="book.borrowedBy === ''">avaliable</span>
-            <span class="status blue" v-if="book.borrowedBy === logged.name">borrowed by you</span>
+            <span class="status blue" v-if="book.borrowedBy === logged.name && book.borrowedBy !== ''">borrowed by you</span>
             <span class="status red" v-if="book.borrowedBy !== '' && book.borrowedBy !== logged.name">borrowed</span>
           </p>
           <p>
