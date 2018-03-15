@@ -73,11 +73,13 @@
       },
       starsHover(index, id) {
         for(var i=0; i<=index; i++) {
+          for(var j=0; j<5; j++) {document.querySelectorAll("i")[(5*(id-1))+j].classList.add('noRate');}
           document.querySelectorAll("i")[(5*(id-1))+index-i].classList.add('starHover');
         }
       },
       starsLeave(index, id) {
         for(var i=0; i<=index; i++) {
+          for(var j=0; j<5; j++) {document.querySelectorAll("i")[(5*(id-1))+j].classList.remove('noRate');}
           document.querySelectorAll("i")[(5*(id-1))+index-i].classList.remove('starHover');
         }
       }
@@ -154,15 +156,20 @@
     cursor: pointer;
   }
 
+  .rate {
+    color: gold;
+    text-shadow: 0 0 25px black, 0 0 10px black, 0 0 4px white, 1px 2px 1px black;
+  }
+
+  .noRate {
+    color: black;
+    text-shadow: none;
+  }
+
   .starHover {      
     font-size: 1.4em;
     color: gold;
     margin-top: -3px;
     text-shadow: 0 0 25px black, 0 0 10px black, 0 0 4px white, 1px 2px 1px black;
-  }
-
-  .rate {
-    color: gold;
-    text-shadow: 0 0 25px black, 0 0 10px black, 0 0 4px white, 1px 2px 1px black;
-  }
+  } 
 </style>
