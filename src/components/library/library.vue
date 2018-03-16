@@ -8,7 +8,7 @@
       </div>
     </div>
     <ul class="row">
-      <li v-for="book in books" class="col s6 m4 l3" v-if="match_name(book) || match_author(book)">
+      <li v-for="book in books" class="col s6 m4 l3" v-show="match_name(book) || match_author(book)">
         <router-link :to="{name: 'book', params: {id: book.id}}">
           <p><i 
             v-for="(star, index) in 5"
